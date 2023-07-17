@@ -166,7 +166,7 @@ const App = () => {
           const fileData = fileResponse.data;
           return { fileName: file.name, fileData };
         } else {
-          console.error('Ошибка при загрузке файла из Dropbox:', file.name);
+          // console.error('Ошибка при загрузке файла из Dropbox:', file.name);
           return null;
         }
       });
@@ -174,11 +174,11 @@ const App = () => {
       const fileData = await Promise.all(promises);
       setFileData(fileData.filter((file) => file !== null));
     } else {
-      console.error('Ошибка при получении списка файлов из Dropbox:', response.status);
-      setError("Обновите api токен для Dropbox");
+      // console.error('Ошибка при получении списка файлов из Dropbox:', response.status);
+      // setError("Обновите api токен для Dropbox");
     }
   } catch (error) {
-    console.error('Ошибка при выполнении запроса к Dropbox API:', error);
+    // console.error('Ошибка при выполнении запроса к Dropbox API:', error);
   }
     };
 
@@ -187,7 +187,7 @@ const App = () => {
 
   const handleLogin = () => {
     // Перенаправление на страницу аутентификации Dropbox OAuth
-    window.location.href = 'https://www.dropbox.com/oauth2/authorize?client_id=zibwpo89o249746&response_type=token&redirect_uri=http://localhost:3000';
+    window.location.href = 'https://www.dropbox.com/oauth2/authorize?client_id=3zcdbbqz12y06pp&response_type=token&redirect_uri=https://get-data-from-txt.vercel.app'; // Вот тут после redirect_uri= напишите ваш сайт куда вы залили этот проект ||| то есть вам надо заменить https://get-data-from-txt.vercel.app на свою ссылку
   };
 
   const handleOAuthCallback = () => {
