@@ -14,7 +14,6 @@ function getNormalDate(dateS) {
 }
 
 const FileData = ({ fileName, fileData }) => {
-  console.log(fileName);
   const [latestEntry, setLatestEntry] = useState('');
 
   useEffect(() => {
