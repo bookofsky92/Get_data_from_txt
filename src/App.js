@@ -32,7 +32,7 @@ const FileData = ({ fileName, fileData }) => {
   const [date, impressions, clicks, conversions, spend] = entries;
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4 mb-4">
+    <div className="bg-white rounded-md shadow-md p-4 mb-4 w-80">
       <div className="text-center mb-4">
         <h2 className="text-xl font-bold">{fileName.split('.')[0]}</h2>
       </div>
@@ -81,13 +81,16 @@ const FooterTable = ({ fileName, fileData }) => {
       }
     })
 
-    setTableData(allTablesData);
+    allTablesData.splice(-2);
+    setTableData(allTablesData[allTablesData.length - 1]);
+
   }, [fileData]);
 
   return (
     <div className="bg-white rounded-md shadow-md p-4 mb-4">
       <h2 className="text-xl font-bold mb-4">{fileName.split('.')[0]}</h2>
-      <table className="w-full border-collapse">
+      <div className="overflow-x-auto">
+      <table className="w-full table-auto border-collapse">
         <thead>
           <tr>
             <th className="p-2 border">Дата и время</th>
@@ -102,20 +105,19 @@ const FooterTable = ({ fileName, fileData }) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row, index) => (
-            <tr>
-              {
-                row.map((el, index) => (
-                  (el && el[0] && el[0] !== '') ?
+          <tr>
+            {
+              tableData.map((el, index) => (
+                (el && el[0] && el[0] !== '') ?
                   <td key={uuid()} className="p-2 border">{el[0].includes('(') ? getNormalDate(el[0]) : el[0]}</td>
                   :
                   ''
-                ))
-              }
-            </tr>
-          ))}
+              ))
+            }
+          </tr>
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
@@ -137,49 +139,49 @@ const App = () => {
           setDropboxToken(currentToken);
         }
 
-        
 
-    // Запрос списка файлов из Dropbox с использованием токена
-    const response = await axios.post('https://api.dropboxapi.com/2/files/list_folder', {
-      path: '/tests',
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${dropboxToken}`,
-      },
-    });
 
-    if (response.status === 200) {
-      const files = response.data.entries;
-      const promises = files.map(async (file) => {
-        const fileResponse = await axios.post('https://content.dropboxapi.com/2/files/download', null, {
+        // Запрос списка файлов из Dropbox с использованием токена
+        const response = await axios.post('https://api.dropboxapi.com/2/files/list_folder', {
+          path: '/tests',
+        }, {
           headers: {
-            'Content-Type': 'application/octet-stream',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${dropboxToken}`,
-            'Dropbox-API-Arg': JSON.stringify({
-              path: file.path_display,
-            }),
           },
         });
 
-        if (fileResponse.status === 200) {
-          const fileData = fileResponse.data;
-          return { fileName: file.name, fileData };
-        } else {
-          // console.error('Ошибка при загрузке файла из Dropbox:', file.name);
-          return null;
-        }
-      });
+        if (response.status === 200) {
+          const files = response.data.entries;
+          const promises = files.map(async (file) => {
+            const fileResponse = await axios.post('https://content.dropboxapi.com/2/files/download', null, {
+              headers: {
+                'Content-Type': 'application/octet-stream',
+                'Authorization': `Bearer ${dropboxToken}`,
+                'Dropbox-API-Arg': JSON.stringify({
+                  path: file.path_display,
+                }),
+              },
+            });
 
-      const fileData = await Promise.all(promises);
-      setFileData(fileData.filter((file) => file !== null));
-    } else {
-      // console.error('Ошибка при получении списка файлов из Dropbox:', response.status);
-      // setError("Обновите api токен для Dropbox");
-    }
-  } catch (error) {
-    // console.error('Ошибка при выполнении запроса к Dropbox API:', error);
-  }
+            if (fileResponse.status === 200) {
+              const fileData = fileResponse.data;
+              return { fileName: file.name, fileData };
+            } else {
+              // console.error('Ошибка при загрузке файла из Dropbox:', file.name);
+              return null;
+            }
+          });
+
+          const fileData = await Promise.all(promises);
+          setFileData(fileData.filter((file) => file !== null));
+        } else {
+          // console.error('Ошибка при получении списка файлов из Dropbox:', response.status);
+          // setError("Обновите api токен для Dropbox");
+        }
+      } catch (error) {
+        // console.error('Ошибка при выполнении запроса к Dropbox API:', error);
+      }
     };
 
     fetchFilesFromDropbox();
@@ -210,7 +212,7 @@ const App = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-8">Данные файлов</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Статистика</h1>
 
       {!isLoggedIn ? (
         <div className="flex justify-center mb-4">
@@ -223,15 +225,15 @@ const App = () => {
       {error !== "" && (
         <h1 className="text-3xl font-bold text-center mt-4 text-red-600">{error}</h1>
       )}
-
-      {fileData.map(({ fileName, fileData }) => (
-        <React.Fragment key={fileName}>
-          {!fileName.includes('statistic_pb') && (
-            <FileData fileName={fileName} fileData={fileData} />
-          )}
-        </React.Fragment>
-      ))}
-
+      <div className="flex flex-wrap just justify-center gap-4">
+        {fileData.map(({ fileName, fileData }) => (
+          <React.Fragment key={fileName}>
+            {!fileName.includes('statistic_pb') && (
+              <FileData fileName={fileName} fileData={fileData} />
+            )}
+          </React.Fragment>
+        ))}
+      </div>
       {fileData.map(({ fileName, fileData }) => (
         <React.Fragment key={fileName}>
           {fileName.includes('statistic_pb') && (
