@@ -143,7 +143,7 @@ const App = () => {
 
         // Запрос списка файлов из Dropbox с использованием токена
         const response = await axios.post('https://api.dropboxapi.com/2/files/list_folder', {
-          path: '/',
+          path: '',
         }, {
           headers: {
             'Content-Type': 'application/json',
