@@ -179,13 +179,21 @@ const App = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Данные файлов</h1>
       {fileData.map(({ fileName, fileData }) => (
         <React.Fragment key={fileName}>
-          {fileName.includes('statistic_pb') ? (
-            <FooterTable fileName={fileName} fileData={fileData} />
-          ) : (
+          {!fileName.includes('statistic_pb') && (
             <FileData fileName={fileName} fileData={fileData} />
           )}
         </React.Fragment>
       ))}
+      {fileData.map(({ fileName, fileData }) => (
+        <React.Fragment key={fileName}>
+          {fileName.includes('statistic_pb') && (
+            <FooterTable fileName={fileName} fileData={fileData} />
+          )}
+        </React.Fragment>
+      ))}
+
+      
+
     </div>
   );
 };
