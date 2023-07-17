@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import uuid from 'react-uuid';
 
 
-const dropboxToken = 'sl.BiXzWhw1IdXVfskh66lV1Q8NYU175ab3VuGwMjtzUlPPu5BSIPrPHQRgo4cWQvDXgBd9KgYiHUmBOaTUyO7EDLrMOVU__rxOFZ1hJfEEk4FrXQyu0blFp8ozyJhfBUaU4jf-8oM'; // Замените на ваш токен доступа Dropbox
+const dropboxToken = 'sl.BiU7yMIwdgY6DdiHU8lcRHpIvq5FFwdFitj4ivGFjT4NH9y7JRWWSAgu58eHwLsJf02Ljdq5Q0oTFnXTUojp6P4tytPhTXNiSkyqA19bhNveGazDU16Fs5kfIht6ujEP6ceeJP8'; // Замените на ваш токен доступа Dropbox
 
 
 function getNormalDate(dateS) {
