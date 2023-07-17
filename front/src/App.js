@@ -121,6 +121,7 @@ const FooterTable = ({ fileName, fileData }) => {
 
 const App = () => {
   const [fileData, setFileData] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchFilesFromDropbox = async () => {
@@ -165,6 +166,7 @@ const App = () => {
           setFileData(fileData.filter((file) => file !== null));
         } else {
           console.error('Ошибка при получении списка файлов из Dropbox:', response.status);
+          setError("Обновите api токен для DropBox");
         }
       } catch (error) {
         console.error('Ошибка при выполнении запроса к Dropbox API:', error);
@@ -177,6 +179,7 @@ const App = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-8">Данные файлов</h1>
+      {error != "" && <h1 className='text-3xl font-bold text-center mt-4 text-red-600'>error</h1>}
       {fileData.map(({ fileName, fileData }) => (
         <React.Fragment key={fileName}>
           {!fileName.includes('statistic_pb') && (
