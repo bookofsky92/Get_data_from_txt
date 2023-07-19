@@ -64,6 +64,60 @@ const FileData = ({ fileName, fileData }) => {
   );
 };
 
+const AllStatisticTable = ({filesData}) => {
+  const [tableData, setTableData] = useState([]);
+  let tableDataArray = [];
+
+  useEffect(() => {
+    filesData.map({ fileName, fileData } => {
+      if (!fileName.includes('statistic_pb')) {
+        const lines = fileData.split('\n');
+        const lastLine = lines[lines.length - 2]; // Игнорируем последнюю пустую строку
+        const entries = lastLine.split('||').map(entry => entry.trim());
+        const [date, impressions, clicks, conversions, spend] = entries;
+        if (tableDataArray.length === 0) {
+          tableDataArray = [+impressions, +clicks, +conversions, +spend];
+        } else {
+          tableDataArray[0] += +impressions;
+          tableDataArray[1] += +clicks;
+          tableDataArray[2] += +conversions;
+          tableDataArray[3] += +spend;
+        }
+      }
+    })
+    setTableData(tableDataArray);
+  }, [tableData]);
+
+  return (
+    <div className="bg-white rounded-md shadow-md p-4 mb-4">
+      <h2 className="text-xl font-bold mb-4 text-center">Общая статистика по сайтам</h2>
+      <div className="overflow-x-auto">
+      <table className="w-full table-auto border-collapse">
+        <thead>
+          <tr>
+            <th className="p-2 border">Показы</th>
+            <th className="p-2 border">Клики</th>
+            <th className="p-2 border">Конверсии</th>
+            <th className="p-2 border">Расход</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {
+              tableData.map((el, index) => (
+                  <td key={uuid()} className="p-2 border">{el}</td>
+              ))
+            }
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  );
+
+  
+}
+
 const FooterTable = ({ fileName, fileData }) => {
   const [tableData, setTableData] = useState([]);
 
@@ -236,6 +290,9 @@ const App = () => {
           </React.Fragment>
         ))}
       </div>
+      <React.Fragment>
+          <AllStatisticTable filesData={fileData} />
+      </React.Fragment>
       {fileData.map(({ fileName, fileData }) => (
         <React.Fragment key={fileName}>
           {fileName.includes('statistic_pb') && (
