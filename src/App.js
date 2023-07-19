@@ -76,12 +76,12 @@ const AllStatisticTable = ({filesData}) => {
         const entries = lastLine.split('||').map(entry => entry.trim());
         const [date, impressions, clicks, conversions, spend] = entries;
         if (tableDataArray.length === 0) {
-          tableDataArray = [+impressions, +clicks, +conversions, +spend];
+          tableDataArray = [+impressions.split(':')[1], +clicks.split(':')[1], +conversions.split(':')[1], +spend.split(':')[1]];
         } else {
-          tableDataArray[0] += +impressions;
-          tableDataArray[1] += +clicks;
-          tableDataArray[2] += +conversions;
-          tableDataArray[3] += +spend;
+          tableDataArray[0] += +impressions.split(':')[1];
+          tableDataArray[1] += +clicks.split(':')[1];
+          tableDataArray[2] += +conversions.split(':')[1];
+          tableDataArray[3] += +spend.split(':')[1];
         }
       }
     })
