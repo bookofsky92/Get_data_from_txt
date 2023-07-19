@@ -76,10 +76,11 @@ const AllStatisticTable = ({filesData}) => {
         const entries = lastLine.split('||').map(entry => entry.trim());
         const [date, impressions, clicks, conversions, spend] = entries;
         const spendings = spend.split(':')[1];
+        const impr = impressions.split(':')[1];
         if (tableDataArray.length === 0) {
-          tableDataArray = [+impressions.split(':')[1], +clicks.split(':')[1], +conversions.split(':')[1], parseFloat(spendings.replace(',', '.'))];
+          tableDataArray = [+impr.replace(/\s/g, ""), +clicks.split(':')[1], +conversions.split(':')[1], parseFloat(spendings.replace(',', '.'))];
         } else {
-          tableDataArray[0] += +impressions.split(':')[1];
+          tableDataArray[0] += +impr.replace(/\s/g, "");
           tableDataArray[1] += +clicks.split(':')[1];
           tableDataArray[2] += +conversions.split(':')[1];
           tableDataArray[3] += parseFloat(spendings.replace(',', '.'));
