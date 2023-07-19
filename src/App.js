@@ -75,13 +75,14 @@ const AllStatisticTable = ({filesData}) => {
         const lastLine = lines[lines.length - 2]; // Игнорируем последнюю пустую строку
         const entries = lastLine.split('||').map(entry => entry.trim());
         const [date, impressions, clicks, conversions, spend] = entries;
+        const spendings = spend.split(':')[1];
         if (tableDataArray.length === 0) {
-          tableDataArray = [+impressions.split(':')[1], +clicks.split(':')[1], +conversions.split(':')[1], +spend.split(':')[1]];
+          tableDataArray = [+impressions.split(':')[1], +clicks.split(':')[1], +conversions.split(':')[1], parseFloat(spendings.replace(',', '.'))];
         } else {
           tableDataArray[0] += +impressions.split(':')[1];
           tableDataArray[1] += +clicks.split(':')[1];
           tableDataArray[2] += +conversions.split(':')[1];
-          tableDataArray[3] += +spend.split(':')[1];
+          tableDataArray[3] += parseFloat(spendings.replace(',', '.'));
         }
       }
     })
