@@ -69,7 +69,7 @@ const AllStatisticTable = ({filesData}) => {
   let tableDataArray = [];
 
   useEffect(() => {
-    filesData.map({ fileName, fileData } => {
+    filesData.map(({ fileName, fileData }) => {
       if (!fileName.includes('statistic_pb')) {
         const lines = fileData.split('\n');
         const lastLine = lines[lines.length - 2]; // Игнорируем последнюю пустую строку
