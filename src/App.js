@@ -265,7 +265,7 @@ const App = () => {
 
   const handleLogin = () => {
     // Перенаправление на страницу аутентификации Dropbox OAuth
-    window.location.href = 'https://www.dropbox.com/oauth2/authorize?client_id=gugnlzdos7meaiq&response_type=token&redirect_uri=http://localhost:3000/'; // --- https://getting-data-from-txt.vercel.app --- Вот тут после redirect_uri= напишите ваш сайт куда вы залили этот проект ||| то есть вам надо заменить https://get-data-from-txt.vercel.app на свою ссылку
+    window.location.href = 'https://www.dropbox.com/oauth2/authorize?client_id=gugnlzdos7meaiq&response_type=token&redirect_uri=https://getting-data-from-txt.vercel.app'; // --- https://getting-data-from-txt.vercel.app --- Вот тут после redirect_uri= напишите ваш сайт куда вы залили этот проект ||| то есть вам надо заменить https://get-data-from-txt.vercel.app на свою ссылку
   };
 
   const handleOAuthCallback = () => {
